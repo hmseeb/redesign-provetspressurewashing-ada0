@@ -474,7 +474,7 @@
     <div class="contact__intro">
       <p class="kicker">Free estimate</p>
       <h2 id="contact-title">Let’s get your property looking new again</h2>
-      <p>Send your details and Devante will follow up personally. Prefer to talk right now? Call or text — you’ll reach the owner, not a call center.</p>
+      <p>No forms to fill out. Call or text Devante directly and he’ll follow up personally — you’ll reach the owner, not a call center.</p>
 
       <ul class="contact__list">
         <li>
@@ -508,65 +508,23 @@
     </div>
 
     <div class="contact__formwrap">
-      <form class="form" id="estimateForm" novalidate>
-        <h3 class="form__title">Request your free estimate</h3>
+      <div class="contact__card">
+        <h3>Request your free estimate</h3>
+        <p>Estimates are handled personally — one call or text is all it takes. Tell Devante your neighborhood and what needs cleaning, and you’ll get a straight answer fast.</p>
 
-        <div class="form__row">
-          <div class="field">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" autocomplete="given-name" placeholder="Devante">
-            <p class="field__error" data-error-for="firstName"></p>
-          </div>
-          <div class="field">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" autocomplete="family-name" placeholder="Stamps">
-            <p class="field__error" data-error-for="lastName"></p>
-          </div>
+        <ul class="contact__card-list">
+          <li>Tell us your neighborhood and what needs cleaning</li>
+          <li>Get a free, no-obligation estimate</li>
+          <li>Pick a day that works for you — call today, be clean tomorrow</li>
+        </ul>
+
+        <div class="contact__card-actions">
+          <a class="btn btn--primary btn--block btn--lg" href="tel:+19045336762">Call (904) 533-6762</a>
+          <a class="btn btn--outline btn--block btn--lg" href="sms:+19045336762">Text (904) 533-6762</a>
         </div>
 
-        <div class="field">
-          <label for="email">Email <span class="req" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-          <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@email.com">
-          <p class="field__error" data-error-for="email"></p>
-        </div>
-
-        <div class="field">
-          <label for="phone">Phone <span class="req" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-          <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="(904) 555-0123">
-          <p class="field__error" data-error-for="phone"></p>
-        </div>
-
-        <div class="field">
-          <label for="service">What needs cleaning?</label>
-          <select id="service" name="service">
-            <option value="">Select a service</option>
-            <option>House &amp; Soft Washing</option>
-            <option>Driveway &amp; Concrete Cleaning</option>
-            <option>Gutter Cleaning</option>
-            <option>Soffit, Fascia &amp; Roofline</option>
-            <option>Sidewalk &amp; Walkway Cleaning</option>
-            <option>Rust, Oil &amp; Mildew Removal</option>
-            <option>Not sure — please advise</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="message">Details <span class="opt">(optional)</span></label>
-          <textarea id="message" name="message" rows="3" placeholder="Neighborhood, square footage, or anything you'd like Devante to know."></textarea>
-        </div>
-
-        <button class="btn btn--primary btn--block btn--lg" type="submit">Submit</button>
-        <p class="form__fineprint">Free estimates · No obligation · Fully insured</p>
-
-        <div class="form__success" id="formSuccess" role="status" hidden>
-          <h4>Thanks — your request is ready to send.</h4>
-          <p id="formSuccessMsg">This site doesn’t store submissions, so send it straight to Devante with one tap:</p>
-          <div class="form__successActions">
-            <a class="btn btn--primary" id="smsLink" href="sms:+19045336762">Text these details</a>
-            <a class="btn btn--outline" href="tel:+19045336762">Call (904) 533-6762</a>
-          </div>
-        </div>
-      </form>
+        <p class="contact__card-fine">Free estimates · No obligation · Fully insured</p>
+      </div>
     </div>
   </div>
 </section>
@@ -616,13 +574,19 @@
         <li><a href="https://www.facebook.com/provetspw" target="_blank" rel="noopener noreferrer">Facebook</a></li>
         <li><a href="https://www.tiktok.com/@provetspwllc" target="_blank" rel="noopener noreferrer">TikTok</a></li>
         <li><a href="#contact">Free estimate</a></li>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="terms-and-conditions.html">Terms &amp; Conditions</a></li>
       </ul>
     </div>
   </div>
 
   <div class="wrap footer__bottom">
     <p>&copy; <span id="year">2026</span> Pro Vets Pressure Washing LLC. All rights reserved.</p>
-    <p>Veteran owned &amp; operated · Fully insured · Free estimates</p>
+    <p class="footer__legal">
+      <a href="privacy-policy.html">Privacy Policy</a> ·
+      <a href="terms-and-conditions.html">Terms &amp; Conditions</a> ·
+      Veteran owned &amp; operated · Fully insured
+    </p>
   </div>
 </footer>
 
