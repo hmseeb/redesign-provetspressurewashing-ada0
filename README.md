@@ -1,7 +1,7 @@
 # Pro Vets Pressure Washing LLC — Website
 
 A complete, modern redesign of the Pro Vets Pressure Washing LLC website.
-Veteran owned and operated pressure washing serving St. Johns, Mandarin, St. Augustine,
+Veteran owned and operated pressure washing serving St. Augustine, Mandarin,
 Ponte Vedra, Nocatee, Jax Beach and surrounding areas in Northeast Florida.
 
 **Phone / Text:** (904) 533-6762
