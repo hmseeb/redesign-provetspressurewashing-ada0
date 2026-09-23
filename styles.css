@@ -407,6 +407,63 @@ ul{margin:0;padding:0;list-style:none;}
 .contact__card .btn--outline:hover{background:var(--navy-800);color:#fff;border-color:var(--navy-800);}
 .contact__card-fine{margin:.9rem 0 0;text-align:center;font-size:.8rem;color:var(--slate-500);}
 
+/* ---------- Lead form ---------- */
+.lead-form{display:grid;gap:.85rem;margin:0 0 1.4rem;}
+.lead-form__row{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.lead-form__field{display:grid;gap:.35rem;margin:0;}
+.lead-form__field label{
+  font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy-700);
+}
+.lead-form__field .req{color:var(--signal-500);}
+.lead-form__field input,
+.lead-form__field textarea{
+  width:100%;padding:.78rem .95rem;border-radius:var(--r-sm);
+  border:1px solid rgba(10,22,38,.16);background:var(--mist-050);color:var(--navy-800);
+  font-size:.95rem;transition:border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.lead-form__field textarea{resize:vertical;min-height:104px;line-height:1.55;}
+.lead-form__field input::placeholder,
+.lead-form__field textarea::placeholder{color:var(--slate-300);}
+.lead-form__field input:hover,
+.lead-form__field textarea:hover{border-color:rgba(10,22,38,.28);}
+.lead-form__field input:focus,
+.lead-form__field textarea:focus{
+  outline:none;background:#fff;border-color:var(--hydro-500);box-shadow:var(--ring);
+}
+.lead-form__field input[aria-invalid="true"],
+.lead-form__field textarea[aria-invalid="true"]{border-color:var(--signal-500);background:rgba(224,43,37,.04);}
+
+.lead-form__error{
+  margin:0;padding:.7rem .9rem;border-radius:var(--r-sm);
+  background:rgba(224,43,37,.08);border:1px solid rgba(224,43,37,.28);
+  color:var(--signal-600);font-size:.88rem;font-weight:600;
+}
+.lead-form__fine{margin:.1rem 0 0;text-align:center;font-size:.78rem;color:var(--slate-500);}
+.lead-form button[type="submit"][aria-busy="true"]{opacity:.72;pointer-events:none;}
+
+/* Honeypot — kept out of view and out of the tab order */
+.lead-form__hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+
+.lead-form__thanks{
+  display:grid;justify-items:center;text-align:center;gap:.3rem;
+  margin:0 0 1.4rem;padding:1.6rem 1.2rem;border-radius:var(--r-lg);
+  background:linear-gradient(160deg,rgba(56,189,248,.10),rgba(224,43,37,.07));
+  border:1px solid rgba(14,165,233,.28);
+}
+.lead-form__thanks[hidden]{display:none;}
+.lead-form__check{
+  display:grid;place-items:center;width:52px;height:52px;margin-bottom:.5rem;border-radius:50%;
+  background:linear-gradient(135deg,var(--hydro-500),var(--hydro-600));
+  box-shadow:0 10px 24px rgba(14,165,233,.32);
+}
+.lead-form__check svg{width:26px;height:26px;fill:#fff;}
+.lead-form__thanks h4{margin:0;font-size:1.12rem;color:var(--navy-800);}
+.lead-form__thanks p{margin:0;max-width:42ch;color:var(--slate-500);font-size:.92rem;}
+
+@media (max-width:520px){
+  .lead-form__row{grid-template-columns:1fr;}
+}
+
 /* ---------- Legal pages ---------- */
 .legal{max-width:80ch;}
 .legal__title{font-size:clamp(2rem,4vw,3rem);}

@@ -461,7 +461,7 @@
     <div class="contact__intro">
       <p class="kicker">Free estimate</p>
       <h2 id="contact-title">Let’s get your property looking new again</h2>
-      <p>No forms to fill out. Call or text Devante directly and he’ll follow up personally — you’ll reach the owner, not a call center.</p>
+      <p>Send the form and Devante will follow up personally — or call and text him directly. Either way you’ll reach the owner, not a call center.</p>
 
       <ul class="contact__list">
         <li>
@@ -497,13 +497,61 @@
     <div class="contact__formwrap">
       <div class="contact__card">
         <h3>Request your free estimate</h3>
-        <p>Estimates are handled personally — one call or text is all it takes. Tell Devante your neighborhood and what needs cleaning, and you’ll get a straight answer fast.</p>
+        <p>Estimates are handled personally. Tell Devante your neighborhood and what needs cleaning, and you’ll get a straight answer fast.</p>
 
         <ul class="contact__card-list">
           <li>Tell us your neighborhood and what needs cleaning</li>
           <li>Get a free, no-obligation estimate</li>
           <li>Pick a day that works for you — call today, be clean tomorrow</li>
         </ul>
+
+        <form class="lead-form" id="estimateForm" data-form-name="Free Estimate Request" novalidate>
+          <!-- Anti-spam honeypot: hidden from people, irresistible to bots -->
+          <div class="lead-form__hp" aria-hidden="true">
+            <label for="lf-company">Company</label>
+            <input type="text" id="lf-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="lead-form__row">
+            <p class="lead-form__field">
+              <label for="lf-first">First name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="lf-first" name="firstName" autocomplete="given-name" required>
+            </p>
+            <p class="lead-form__field">
+              <label for="lf-last">Last name</label>
+              <input type="text" id="lf-last" name="lastName" autocomplete="family-name">
+            </p>
+          </div>
+
+          <div class="lead-form__row">
+            <p class="lead-form__field">
+              <label for="lf-phone">Phone <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="lf-phone" name="phone" autocomplete="tel" inputmode="tel" required>
+            </p>
+            <p class="lead-form__field">
+              <label for="lf-email">Email <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="lf-email" name="email" autocomplete="email" inputmode="email" required>
+            </p>
+          </div>
+
+          <p class="lead-form__field">
+            <label for="lf-message">What needs cleaning?</label>
+            <textarea id="lf-message" name="message" rows="4" placeholder="Neighborhood, and what you'd like cleaned — driveway, house wash, gutters…"></textarea>
+          </p>
+
+          <p class="lead-form__error" id="estimateError" role="alert" hidden></p>
+
+          <button class="btn btn--primary btn--block btn--lg" type="submit" id="estimateSubmit">Get My Free Estimate</button>
+          <p class="lead-form__fine">We’ll only use your details to get back to you about your estimate.</p>
+        </form>
+
+        <div class="lead-form__thanks" id="estimateThanks" role="status" tabindex="-1" hidden>
+          <span class="lead-form__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+          </span>
+          <h4>Thank you — your request is in!</h4>
+          <p>Devante has your details and will reach out personally with your free estimate. Need it sooner? Call or text (904) 533-6762.</p>
+        </div>
 
         <div class="contact__card-actions">
           <a class="btn btn--primary btn--block btn--lg" href="tel:+19045336762">Call (904) 533-6762</a>

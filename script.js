@@ -118,4 +118,142 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
+
+  /* ---------------------------------------------------------
+     6. Lead forms → GoHighLevel
+     Every .lead-form on the site posts to /api/lead, which
+     creates or updates the contact in the GHL sub-account.
+     --------------------------------------------------------- */
+  var leadForms = Array.prototype.slice.call(document.querySelectorAll('.lead-form'));
+
+  leadForms.forEach(function (form) {
+    var submitBtn = form.querySelector('[type="submit"]');
+    var errorBox = form.querySelector('.lead-form__error');
+    var thanks = form.parentNode ? form.parentNode.querySelector('.lead-form__thanks') : null;
+    var submitLabel = submitBtn ? submitBtn.textContent : '';
+
+    function showError(message) {
+      if (!errorBox) return;
+      errorBox.textContent = message;
+      errorBox.hidden = false;
+    }
+
+    function clearError() {
+      if (!errorBox) return;
+      errorBox.hidden = true;
+      errorBox.textContent = '';
+    }
+
+    function value(name) {
+      var field = form.elements[name];
+      return field && field.value ? field.value.trim() : '';
+    }
+
+    function flag(name, invalid) {
+      var field = form.elements[name];
+      if (!field) return;
+      if (invalid) {
+        field.setAttribute('aria-invalid', 'true');
+      } else {
+        field.removeAttribute('aria-invalid');
+      }
+    }
+
+    /* Clear the invalid state as soon as the visitor fixes it. */
+    form.addEventListener('input', function (e) {
+      if (e.target && e.target.getAttribute('aria-invalid') === 'true') {
+        e.target.removeAttribute('aria-invalid');
+      }
+      /* The banner is re-evaluated on the next submit, so drop the
+         stale message as soon as the visitor starts correcting. */
+      clearError();
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearError();
+
+      var firstName = value('firstName');
+      var phone = value('phone');
+      var email = value('email');
+
+      var invalidFirst = !firstName;
+      var invalidPhone = phone.replace(/\D/g, '').length < 10;
+      var invalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+
+      flag('firstName', invalidFirst);
+      flag('phone', invalidPhone);
+      flag('email', invalidEmail);
+
+      if (invalidFirst || invalidPhone || invalidEmail) {
+        var first = form.querySelector('[aria-invalid="true"]');
+        if (first && first.focus) first.focus();
+        showError(
+          invalidFirst
+            ? 'Please enter your first name.'
+            : invalidPhone
+              ? 'Please enter a valid phone number.'
+              : 'Please enter a valid email address.'
+        );
+        return;
+      }
+
+      var payload = {
+        firstName: firstName,
+        lastName: value('lastName'),
+        phone: phone,
+        email: email,
+        message: value('message'),
+        company: value('company'),
+        formName: form.getAttribute('data-form-name') || form.id || 'Website Form'
+      };
+
+      if (submitBtn) {
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      }
+
+      function restore() {
+        if (!submitBtn) return;
+        submitBtn.removeAttribute('aria-busy');
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitLabel;
+      }
+
+      fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            return { ok: res.ok && body && body.ok !== false, body: body || {} };
+          });
+        })
+        .then(function (result) {
+          if (!result.ok) {
+            restore();
+            showError(
+              result.body.error ||
+              'We could not submit your request. Please call or text (904) 533-6762.'
+            );
+            return;
+          }
+
+          form.reset();
+          form.hidden = true;
+          form.style.display = 'none';
+
+          if (thanks) {
+            thanks.hidden = false;
+            if (thanks.focus) thanks.focus();
+          }
+        })
+        .catch(function () {
+          restore();
+          showError('Network error — please call or text (904) 533-6762.');
+        });
+    });
+  });
 })();

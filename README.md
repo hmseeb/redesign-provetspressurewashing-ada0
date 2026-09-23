@@ -8,12 +8,14 @@ Ponte Vedra, Nocatee, Jax Beach and surrounding areas in Northeast Florida.
 
 ## Stack
 
-Vanilla HTML, CSS and JavaScript — no build step, no dependencies, no external APIs.
+Vanilla HTML, CSS and JavaScript — no build step, no dependencies.
+Form submissions are relayed to GoHighLevel by a single serverless function.
 
 ```
 index.html   Entry point — all page sections and structured data
 styles.css   Design system, layout and responsive rules
-script.js    Mobile nav, scroll reveal, scroll spy, form validation
+script.js    Mobile nav, scroll reveal, scroll spy, form validation + submit
+api/lead.js  Serverless endpoint — syncs form submissions to GoHighLevel
 ```
 
 ## Running locally
@@ -37,11 +39,30 @@ python3 -m http.server 8000
 - Service area coverage
 - Contact section with phone, text, service area and a free-estimate form
 
+## Lead capture (GoHighLevel)
+
+Every form on the site carries the `lead-form` class and posts to `/api/lead`.
+That endpoint creates or updates the contact in the GoHighLevel sub-account
+(location `60mqvUeI3AjQBxVF6rgY`) with first name, last name, phone, email and
+the message, sets the custom fields **Lead Source** → `Website` and
+**Website Form** → the submitting form's name, and applies the **`website-lead`**
+tag. The message is also written to the contact's notes timeline. A thank-you
+message replaces the form once the submission succeeds.
+
+The API token is never stored in the repo — set it as an environment variable in
+the hosting dashboard:
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `GHL_API_TOKEN` | yes | Private Integration token for the location. Needs the `contacts.write`, `contacts.readonly` and custom-field scopes. |
+| `GHL_LOCATION_ID` | no | Overrides the default location id. |
+
+Without `GHL_API_TOKEN` the endpoint returns a friendly error pointing visitors
+to the phone number rather than silently dropping the lead.
+
 ## Notes
 
-- The estimate form is client-side only: it validates input and then hands the details
-  off to the customer's SMS app pre-addressed to the business number. No data is stored
-  and no third-party service is contacted.
+
 - Photography of the owner, equipment and completed jobs is original to the business.
 - Accessibility: semantic landmarks, skip link, visible focus rings, labelled form fields
   and `prefers-reduced-motion` support.
