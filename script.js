@@ -120,17 +120,41 @@
   }
 
   /* ---------------------------------------------------------
-     6. Lead forms → GoHighLevel
-     Every .lead-form on the site posts to /api/lead, which
-     creates or updates the contact in the GHL sub-account.
+     6. Lead forms → LeadrVision
+     Every .lead-form on the site POSTs to the LeadrVision forms
+     endpoint (the same URL as the form's action attribute, so the
+     form still works with JavaScript disabled).
      --------------------------------------------------------- */
+  var LEADR_ENDPOINT = 'https://vision.leadrai.com/api/forms/747b1309a2ec7b1a4f7b7ef34a790654';
+
   var leadForms = Array.prototype.slice.call(document.querySelectorAll('.lead-form'));
+
+  /* Tell LeadrVision which page the visitor submitted from so they
+     get sent back here afterwards. */
+  var submittedParam = /[?&]submitted=1(?:&|$)/.test(window.location.search);
 
   leadForms.forEach(function (form) {
     var submitBtn = form.querySelector('[type="submit"]');
     var errorBox = form.querySelector('.lead-form__error');
     var thanks = form.parentNode ? form.parentNode.querySelector('.lead-form__thanks') : null;
     var submitLabel = submitBtn ? submitBtn.textContent : '';
+
+    var pageField = form.elements['_page'];
+    if (pageField) pageField.value = window.location.href;
+
+    function showThanks() {
+      form.reset();
+      form.hidden = true;
+      form.style.display = 'none';
+
+      if (thanks) {
+        thanks.hidden = false;
+        if (thanks.focus) thanks.focus();
+      }
+    }
+
+    /* Plain (no-JavaScript) submissions come back with ?submitted=1 */
+    if (submittedParam) showThanks();
 
     function showError(message) {
       if (!errorBox) return;
@@ -173,7 +197,7 @@
       e.preventDefault();
       clearError();
 
-      var firstName = value('firstName');
+      var firstName = value('First name');
       var phone = value('phone');
       var email = value('email');
 
@@ -181,7 +205,7 @@
       var invalidPhone = phone.replace(/\D/g, '').length < 10;
       var invalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 
-      flag('firstName', invalidFirst);
+      flag('First name', invalidFirst);
       flag('phone', invalidPhone);
       flag('email', invalidEmail);
 
@@ -198,15 +222,16 @@
         return;
       }
 
-      var payload = {
-        firstName: firstName,
-        lastName: value('lastName'),
-        phone: phone,
-        email: email,
-        message: value('message'),
-        company: value('company'),
-        formName: form.getAttribute('data-form-name') || form.id || 'Website Form'
-      };
+      /* Send exactly what the form contains, keyed by each field's
+         human-readable name attribute. */
+      var payload = {};
+      Array.prototype.forEach.call(form.elements, function (field) {
+        if (!field.name || field.disabled || field.type === 'submit' || field.type === 'button') return;
+        if ((field.type === 'checkbox' || field.type === 'radio') && !field.checked) return;
+        payload[field.name] = field.value;
+      });
+      payload._form = payload._form || form.getAttribute('data-form-name') || form.id || 'Website Form';
+      payload._page = window.location.href;
 
       if (submitBtn) {
         submitBtn.setAttribute('aria-busy', 'true');
@@ -221,9 +246,9 @@
         submitBtn.textContent = submitLabel;
       }
 
-      fetch('/api/lead', {
+      fetch(form.getAttribute('action') || LEADR_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload)
       })
         .then(function (res) {
@@ -241,14 +266,7 @@
             return;
           }
 
-          form.reset();
-          form.hidden = true;
-          form.style.display = 'none';
-
-          if (thanks) {
-            thanks.hidden = false;
-            if (thanks.focus) thanks.focus();
-          }
+          showThanks();
         })
         .catch(function () {
           restore();

@@ -9,13 +9,13 @@ Ponte Vedra, Nocatee, Jax Beach and surrounding areas in Northeast Florida.
 ## Stack
 
 Vanilla HTML, CSS and JavaScript — no build step, no dependencies.
-Form submissions are relayed to GoHighLevel by a single serverless function.
+Form submissions are posted straight to the LeadrVision forms endpoint, so there
+is no server-side code to deploy.
 
 ```
 index.html   Entry point — all page sections and structured data
 styles.css   Design system, layout and responsive rules
 script.js    Mobile nav, scroll reveal, scroll spy, form validation + submit
-api/lead.js  Serverless endpoint — syncs form submissions to GoHighLevel
 ```
 
 ## Running locally
@@ -39,26 +39,31 @@ python3 -m http.server 8000
 - Service area coverage
 - Contact section with phone, text, service area and a free-estimate form
 
-## Lead capture (GoHighLevel)
+## Lead capture (LeadrVision)
 
-Every form on the site carries the `lead-form` class and posts to `/api/lead`.
-That endpoint creates or updates the contact in the GoHighLevel sub-account
-(location `60mqvUeI3AjQBxVF6rgY`) with first name, last name, phone, email and
-the message, sets the custom fields **Lead Source** → `Website` and
-**Website Form** → the submitting form's name, and applies the **`website-lead`**
-tag. The message is also written to the contact's notes timeline. A thank-you
-message replaces the form once the submission succeeds.
+Every form on the site carries the `lead-form` class and submits to:
 
-The API token is never stored in the repo — set it as an environment variable in
-the hosting dashboard:
+```
+https://vision.leadrai.com/api/forms/747b1309a2ec7b1a4f7b7ef34a790654
+```
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `GHL_API_TOKEN` | yes | Private Integration token for the location. Needs the `contacts.write`, `contacts.readonly` and custom-field scopes. |
-| `GHL_LOCATION_ID` | no | Overrides the default location id. |
+That URL is set as the form's `action`, so submissions work even with
+JavaScript disabled. `script.js` validates the fields and POSTs the same URL
+with `fetch()`; on a JSON `{"ok": true}` response the thank-you message replaces
+the form inline. A plain HTML submission returns the visitor to the page with
+`?submitted=1`, which shows the identical confirmation.
 
-Without `GHL_API_TOKEN` the endpoint returns a friendly error pointing visitors
-to the phone number rather than silently dropping the lead.
+Each form carries three hidden fields:
+
+| Field | Purpose |
+| --- | --- |
+| `_form` | Short human name for the form, e.g. `Quote request`. |
+| `_page` | Set to `window.location.href` on page load so the visitor returns to the right page. |
+| `_gotcha` | Hidden honeypot — only bots fill it in. |
+
+Visible fields use human-readable `name` attributes (`First name`, `Last name`,
+`What needs cleaning`), with `phone` and `email` named exactly as required.
+No credentials or environment variables are needed.
 
 ## Notes
 
