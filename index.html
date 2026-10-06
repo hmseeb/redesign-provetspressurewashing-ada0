@@ -515,16 +515,10 @@
           <!-- Anti-spam honeypot: hidden from people, irresistible to bots -->
           <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none">
 
-          <div class="lead-form__row">
-            <p class="lead-form__field">
-              <label for="lf-first">First name <span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="lf-first" name="First name" autocomplete="given-name" required>
-            </p>
-            <p class="lead-form__field">
-              <label for="lf-last">Last name</label>
-              <input type="text" id="lf-last" name="Last name" autocomplete="family-name">
-            </p>
-          </div>
+          <p class="lead-form__field">
+            <label for="lf-name">Name <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="lf-name" name="name" autocomplete="name" required>
+          </p>
 
           <div class="lead-form__row">
             <p class="lead-form__field">

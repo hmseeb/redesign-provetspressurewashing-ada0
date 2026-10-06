@@ -197,24 +197,24 @@
       e.preventDefault();
       clearError();
 
-      var firstName = value('First name');
+      var fullName = value('name');
       var phone = value('phone');
       var email = value('email');
 
-      var invalidFirst = !firstName;
+      var invalidName = !fullName;
       var invalidPhone = phone.replace(/\D/g, '').length < 10;
       var invalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 
-      flag('First name', invalidFirst);
+      flag('name', invalidName);
       flag('phone', invalidPhone);
       flag('email', invalidEmail);
 
-      if (invalidFirst || invalidPhone || invalidEmail) {
+      if (invalidName || invalidPhone || invalidEmail) {
         var first = form.querySelector('[aria-invalid="true"]');
         if (first && first.focus) first.focus();
         showError(
-          invalidFirst
-            ? 'Please enter your first name.'
+          invalidName
+            ? 'Please enter your name.'
             : invalidPhone
               ? 'Please enter a valid phone number.'
               : 'Please enter a valid email address.'
