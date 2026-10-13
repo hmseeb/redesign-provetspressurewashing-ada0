@@ -4,6 +4,11 @@
       "source": "/admin",
       "destination": "https://vision.leadrai.com/site-admin/site-b49605cb61bc6770a48817d4c090798f8200",
       "permanent": false
+    },
+    {
+      "source": "/review",
+      "destination": "https://vision.leadrai.com/r/-HSPPu9F0JwJ4s4vFpu1DdbFTJvtmHQyoqWYlxwEEuU",
+      "permanent": false
     }
   ]
 }
